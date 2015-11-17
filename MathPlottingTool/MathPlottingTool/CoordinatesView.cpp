@@ -1,6 +1,8 @@
 #include "CoordinatesView.h"
 #include <cstdio>
 #include <tchar.h>
+#include"PaserModel.h"
+
 
 CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int height, int gridLength, double _xPerGrid, int milesGap, int offsetX, int offsetY)
 {
@@ -130,7 +132,12 @@ void CoordinatesView::drawCoordiates(COLORREF axisColor, COLORREF girdColor)
 	::DeleteObject(LightGridPen);
 }
 
-void CoordinatesView::drawFunc(Func func, COLORREF lineColor)
+void CoordinatesView::addFunc(wstring expr)
+{
+	drawFuncarray.push_back(expr);
+}
+
+void CoordinatesView::drawFunc(wstring func, COLORREF lineColor)
 {
 	Range range = {};
 	range.begin = -10000;
@@ -138,7 +145,7 @@ void CoordinatesView::drawFunc(Func func, COLORREF lineColor)
 	drawFunc(func, lineColor, range);
 }
 
-void CoordinatesView::drawFunc(Func func, COLORREF lineColor, Range range)
+void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 {
 	if (range.end < range.begin) {
 		std::fprintf(stderr, "ERROR! can't draw function in that range\n");
@@ -168,15 +175,23 @@ void CoordinatesView::drawFunc(Func func, COLORREF lineColor, Range range)
 	}
 
 
-	int startY = static_cast<int>(func(range.begin));
+	int startY = static_cast<int>(parserFunc(func,range.begin));
 	::MoveToEx(hdc, drawing_pixel_x, startY, NULL);
 
 	for (double x = range.begin; x < range.end; x += x_per_pixel) {
 		drawing_pixel_x += 1;
-		double y = func(x);
+		double y = parserFunc(func,x);
 		int drawing_y = static_cast<int>(-(y / x_per_pixel) + zeroPointY);
 		::LineTo(hdc, drawing_pixel_x, drawing_y);
 	}
 	::DeleteObject(drawFuncpen);
 
+}
+
+void CoordinatesView::drawAllFunc()
+{
+	for (int i = 0; i < drawFuncarray.size(); i++)
+	{
+		drawFunc(drawFuncarray[i],0x000000);
+	}
 }

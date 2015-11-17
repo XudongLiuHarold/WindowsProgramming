@@ -3,7 +3,6 @@
 #include<vector>
 
 using namespace std;
-typedef double(*Func)(double);
 struct Range
 {
 	double begin;
@@ -26,9 +25,10 @@ public:
 	~CoordinatesView();
 
 	void drawCoordiates(COLORREF axisColor, COLORREF girdColor);
-
-	void drawFunc(Func func, COLORREF lineColor);
-	void drawFunc(Func func, COLORREF lineColor, Range range);
+	void addFunc(wstring expr);
+	void drawFunc(wstring func, COLORREF lineColor);
+	void drawFunc(wstring func, COLORREF lineColor, Range range);
+	void drawAllFunc();
 	
 private:
 	HWND hwnd;
@@ -46,5 +46,7 @@ private:
 	HPEN drawPen;
 	HBRUSH bgBush;
 	PAINTSTRUCT *ps;
-	vector<double>drawFuncarray;
+    vector<wstring>drawFuncarray;
+
+	
 };

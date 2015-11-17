@@ -1,11 +1,12 @@
-
 #include"CoordinatesView.h"
 #include <windowsx.h>
+#include<atlstr.h>
+
 
 #define PI 3.1415
 
 
-static struct Const 
+const static struct Const 
 {
 	bool changed = true;
     double perGrid = 1.0;
@@ -25,11 +26,12 @@ static struct Const
 };
 
 Const con;
-
 bool lButtonDown = false;
 int mouseX1, mouseY1, mouseX2, mouseY2;
 int dx = 0, dy = 0;
 WCHAR debug_buf[4096];
+
+HWND hwnd_func_1,hwnd_func_2,hwnd_func_3;
 
 LRESULT CALLBACK WindowProc(
 	_In_  HWND hwnd,
@@ -39,10 +41,15 @@ LRESULT CALLBACK WindowProc(
 	);
 
 
-void draw(HWND hwnd)
+
+
+void draw(HWND hwnd,wstring func)
 {
 	CoordinatesView * coorView = new CoordinatesView(hwnd,0,0,750,750,20,con.perGrid,5,con.offsetX,con.offsetY);
 	coorView->drawCoordiates(0x000000, 0xcccccc);
+	//wstring func = L"Log(x)";
+	coorView->addFunc(func);
+	coorView->drawAllFunc();
 	delete coorView;
 }
 
@@ -113,17 +120,17 @@ LRESULT CALLBACK WindowProc(
 	case WM_CREATE:
 	{
 		// func input 
-		HWND hwnd_func_1 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"F(x)",
+		hwnd_func_1 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"F(x)",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
 			800, 100, 200, 24,	// x, y, w, h
 			hwnd, (HMENU)(con.fun_input_id1),
 			(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
-		HWND hwnd_func_2 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"G(x)",
+		 hwnd_func_2 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"G(x)",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
 			800, 150, 200, 24,	// x, y, w, h
 			hwnd, (HMENU)(con.fun_input_id2),
 			(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
-		HWND hwnd_func_3 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"H(x)",
+		 hwnd_func_3 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"H(x)",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
 			800, 200, 200, 24,	// x, y, w, h
 			hwnd, (HMENU)(con.fun_input_id3),
@@ -169,7 +176,7 @@ LRESULT CALLBACK WindowProc(
 
 	case WM_PAINT:
 		if (con.changed) {
-			draw(hwnd);
+			draw(hwnd,L"");
 			con.changed = false;
 		}
 		break;
@@ -188,7 +195,7 @@ LRESULT CALLBACK WindowProc(
 			mouseY1 = mouseY2;
 			con.offsetX += dx;
 			con.offsetY += dy;
-			draw(hwnd);
+			draw(hwnd,L"");
 		}
 		break;
 
@@ -210,8 +217,58 @@ LRESULT CALLBACK WindowProc(
 			}
 		}
 		con.changed = true;
-		draw(hwnd);
+		draw(hwnd,L"");
 		break;
+	case WM_COMMAND:
+		switch (LOWORD(wParam))
+		{
+		case 126:
+		{	
+			TCHAR buff [] = TEXT("A#4");
+			GetWindowText(hwnd_func_1,buff, GetWindowTextLength(hwnd_func_1)+1);
+			wstring funcString(buff);
+			//redraw !
+			draw(hwnd,funcString);
+		}
+			break;
+		case 127:
+		{
+			TCHAR buff[] = TEXT("A#4");
+			GetWindowText(hwnd_func_2, buff, GetWindowTextLength(hwnd_func_2) + 1);
+			wstring funcString(buff);
+			draw(hwnd, funcString);
+			MessageBox(hwnd, buff, L"提示", MB_OK | MB_ICONINFORMATION);
+		
+		}
+			break;
+		case 128:
+		{
+			TCHAR buff[] = TEXT("A#4");
+			GetWindowText(hwnd_func_3, buff, GetWindowTextLength(hwnd_func_3) + 1);
+			wstring funcString(buff);
+			draw(hwnd, funcString);
+			MessageBox(hwnd, buff, L"提示", MB_OK | MB_ICONINFORMATION);	
+		}
+			break;
+		case 129:
+			MessageBox(hwnd, L"Save bitmap", L"提示", MB_OK | MB_ICONINFORMATION);
+			break;
+		case 130:
+			MessageBox(hwnd, L"Save Png", L"提示", MB_OK | MB_ICONINFORMATION);
+			break;
+		case 131:
+			MessageBox(hwnd, L"Save svg", L"提示", MB_OK | MB_ICONINFORMATION);
+			break;
+		case 132:
+			MessageBox(hwnd, L"Import from file", L"提示", MB_OK | MB_ICONINFORMATION);
+			break;
+		
+		default:
+			break;
+		}
+		break;
+
+
 
 	case WM_CLOSE:
 		DestroyWindow(hwnd);

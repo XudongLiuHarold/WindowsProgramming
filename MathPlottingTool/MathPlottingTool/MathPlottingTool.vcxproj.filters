@@ -13,6 +13,12 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\PaserModel">
+      <UniqueIdentifier>{88789217-bf2f-4419-b2a3-5f427f435d32}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="头文件\PaserModel">
+      <UniqueIdentifier>{72e2e541-c522-45a4-9c03-4a4b96487705}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MainController.cpp">
@@ -22,12 +28,39 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="PaserModel.cpp">
-      <Filter>源文件</Filter>
+      <Filter>源文件\PaserModel</Filter>
+    </ClCompile>
+    <ClCompile Include="error.cpp">
+      <Filter>源文件\PaserModel</Filter>
+    </ClCompile>
+    <ClCompile Include="parser.cpp">
+      <Filter>源文件\PaserModel</Filter>
+    </ClCompile>
+    <ClCompile Include="functions.cpp">
+      <Filter>源文件\PaserModel</Filter>
+    </ClCompile>
+    <ClCompile Include="variablelist.cpp">
+      <Filter>源文件\PaserModel</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoordinatesView.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="parser.h">
+      <Filter>头文件\PaserModel</Filter>
+    </ClInclude>
+    <ClInclude Include="error.h">
+      <Filter>头文件\PaserModel</Filter>
+    </ClInclude>
+    <ClInclude Include="functions.h">
+      <Filter>头文件\PaserModel</Filter>
+    </ClInclude>
+    <ClInclude Include="constants.h">
+      <Filter>头文件\PaserModel</Filter>
+    </ClInclude>
+    <ClInclude Include="variablelist.h">
+      <Filter>头文件\PaserModel</Filter>
     </ClInclude>
     <ClInclude Include="PaserModel.h">
       <Filter>头文件</Filter>
