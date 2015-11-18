@@ -42,6 +42,9 @@
     <ClCompile Include="variablelist.cpp">
       <Filter>源文件\PaserModel</Filter>
     </ClCompile>
+    <ClCompile Include="ExplortModel.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CoordinatesView.h">
@@ -63,6 +66,9 @@
       <Filter>头文件\PaserModel</Filter>
     </ClInclude>
     <ClInclude Include="PaserModel.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ExportModel.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,7 +1,7 @@
 #include"CoordinatesView.h"
 #include <windowsx.h>
 #include<atlstr.h>
-
+#include"ExportModel.h"
 
 #define PI 3.1415
 
@@ -31,8 +31,9 @@ int mouseX1, mouseY1, mouseX2, mouseY2;
 int dx = 0, dy = 0;
 WCHAR debug_buf[4096];
 
-static wstring needToDrawFunc [3];
 
+static wstring needToDrawFunc [3];
+//CoordinatesView * coorView;
 HWND hwnd_func_1,hwnd_func_2,hwnd_func_3;
 
 LRESULT CALLBACK WindowProc(
@@ -47,14 +48,14 @@ LRESULT CALLBACK WindowProc(
 
 void draw(HWND hwnd)
 {
-	CoordinatesView * coorView = new CoordinatesView(hwnd,0,0,750,750,20,con.perGrid,5,con.offsetX,con.offsetY);
+	CoordinatesView *  coorView = new CoordinatesView(hwnd,0,0,750,750,20,con.perGrid,5,con.offsetX,con.offsetY);
 	coorView->drawCoordiates(0x000000, 0xcccccc);
 	for (int  i = 0; i < 3; i++)
 	{
 		coorView->addFunc(needToDrawFunc[i]);
 	}
 	coorView->drawAllFunc();
-	delete coorView;
+	delete(coorView);
 }
 
 
@@ -254,11 +255,13 @@ LRESULT CALLBACK WindowProc(
 			wstring funcString(buff);
 			needToDrawFunc[2] = funcString;
 			draw(hwnd);
-			MessageBox(hwnd, buff, L"提示", MB_OK | MB_ICONINFORMATION);	
 		}
 			break;
 		case 129:
+		{
+			save(hwnd, 750, 750);
 			MessageBox(hwnd, L"Save bitmap", L"提示", MB_OK | MB_ICONINFORMATION);
+		}
 			break;
 		case 130:
 			MessageBox(hwnd, L"Save Png", L"提示", MB_OK | MB_ICONINFORMATION);

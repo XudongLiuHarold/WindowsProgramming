@@ -3,6 +3,7 @@
 #include <cstdio>
 #include "parser.h"
 #include<windowsx.h>
+#include"PaserModel.h"
 
 using namespace std;
 void string_replace(string&s1, const string&s2, const string&s3);

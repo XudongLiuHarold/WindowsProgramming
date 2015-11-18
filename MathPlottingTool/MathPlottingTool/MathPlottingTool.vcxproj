@@ -149,6 +149,7 @@
   <ItemGroup>
     <ClCompile Include="CoordinatesView.cpp" />
     <ClCompile Include="error.cpp" />
+    <ClCompile Include="ExplortModel.cpp" />
     <ClCompile Include="functions.cpp" />
     <ClCompile Include="MainController.cpp" />
     <ClCompile Include="parser.cpp" />
@@ -161,6 +162,7 @@
     <ClInclude Include="constants.h" />
     <ClInclude Include="CoordinatesView.h" />
     <ClInclude Include="error.h" />
+    <ClInclude Include="ExportModel.h" />
     <ClInclude Include="functions.h" />
     <ClInclude Include="parser.h" />
     <ClInclude Include="PaserModel.h" />
