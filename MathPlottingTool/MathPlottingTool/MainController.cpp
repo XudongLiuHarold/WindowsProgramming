@@ -31,6 +31,8 @@ int mouseX1, mouseY1, mouseX2, mouseY2;
 int dx = 0, dy = 0;
 WCHAR debug_buf[4096];
 
+static wstring needToDrawFunc [3];
+
 HWND hwnd_func_1,hwnd_func_2,hwnd_func_3;
 
 LRESULT CALLBACK WindowProc(
@@ -43,15 +45,19 @@ LRESULT CALLBACK WindowProc(
 
 
 
-void draw(HWND hwnd,wstring func)
+void draw(HWND hwnd)
 {
 	CoordinatesView * coorView = new CoordinatesView(hwnd,0,0,750,750,20,con.perGrid,5,con.offsetX,con.offsetY);
 	coorView->drawCoordiates(0x000000, 0xcccccc);
-	//wstring func = L"Log(x)";
-	coorView->addFunc(func);
+	for (int  i = 0; i < 3; i++)
+	{
+		coorView->addFunc(needToDrawFunc[i]);
+	}
 	coorView->drawAllFunc();
 	delete coorView;
 }
+
+
 
 
 int CALLBACK WinMain(
@@ -176,7 +182,7 @@ LRESULT CALLBACK WindowProc(
 
 	case WM_PAINT:
 		if (con.changed) {
-			draw(hwnd,L"");
+			draw(hwnd);
 			con.changed = false;
 		}
 		break;
@@ -195,7 +201,7 @@ LRESULT CALLBACK WindowProc(
 			mouseY1 = mouseY2;
 			con.offsetX += dx;
 			con.offsetY += dy;
-			draw(hwnd,L"");
+			draw(hwnd);
 		}
 		break;
 
@@ -217,7 +223,7 @@ LRESULT CALLBACK WindowProc(
 			}
 		}
 		con.changed = true;
-		draw(hwnd,L"");
+		draw(hwnd);
 		break;
 	case WM_COMMAND:
 		switch (LOWORD(wParam))
@@ -227,8 +233,9 @@ LRESULT CALLBACK WindowProc(
 			TCHAR buff [] = TEXT("A#4");
 			GetWindowText(hwnd_func_1,buff, GetWindowTextLength(hwnd_func_1)+1);
 			wstring funcString(buff);
+			needToDrawFunc[0] = funcString;
 			//redraw !
-			draw(hwnd,funcString);
+			draw(hwnd);
 		}
 			break;
 		case 127:
@@ -236,9 +243,8 @@ LRESULT CALLBACK WindowProc(
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_2, buff, GetWindowTextLength(hwnd_func_2) + 1);
 			wstring funcString(buff);
-			draw(hwnd, funcString);
-			MessageBox(hwnd, buff, L"提示", MB_OK | MB_ICONINFORMATION);
-		
+			needToDrawFunc[1] = funcString;
+			draw(hwnd);
 		}
 			break;
 		case 128:
@@ -246,7 +252,8 @@ LRESULT CALLBACK WindowProc(
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_3, buff, GetWindowTextLength(hwnd_func_3) + 1);
 			wstring funcString(buff);
-			draw(hwnd, funcString);
+			needToDrawFunc[2] = funcString;
+			draw(hwnd);
 			MessageBox(hwnd, buff, L"提示", MB_OK | MB_ICONINFORMATION);	
 		}
 			break;
@@ -267,9 +274,6 @@ LRESULT CALLBACK WindowProc(
 			break;
 		}
 		break;
-
-
-
 	case WM_CLOSE:
 		DestroyWindow(hwnd);
 		break;

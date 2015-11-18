@@ -19,16 +19,20 @@ CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int he
 	this->milesGap = milesGap;
 
 	drawFuncarray.clear();
+	lineColor[0] = RGB(251, 73, 71);
+	lineColor[1] = RGB(254,185,37);
+	lineColor[2] = RGB(42,204,52);
+
 
 	ps = new PAINTSTRUCT;
 	hdc = ::GetDC(hwnd);
-	drawPen = ::CreatePen(PS_SOLID, 1, RGB(11, 11, 11));
+	drawPen = ::CreatePen(PS_SOLID, 1, RGB(123, 123, 123));
 	bgBush = CreateSolidBrush(RGB(255,255,255));
 
 	::SelectObject(hdc,drawPen);
 	::SelectObject(hdc,bgBush);
 
-	::Rectangle(hdc,left,top,width+15,height);
+	::Rectangle(hdc,left,top,width,height);
 
 	::DeleteObject(drawPen);
 	::DeleteObject(bgBush);
@@ -192,6 +196,9 @@ void CoordinatesView::drawAllFunc()
 {
 	for (int i = 0; i < drawFuncarray.size(); i++)
 	{
-		drawFunc(drawFuncarray[i],0x000000);
+		if (drawFuncarray[i].length() != 0 )
+		{
+			drawFunc(drawFuncarray[i], lineColor[i]);
+		}	
 	}
 }

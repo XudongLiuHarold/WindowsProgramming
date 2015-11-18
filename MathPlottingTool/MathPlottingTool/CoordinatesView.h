@@ -26,8 +26,6 @@ public:
 
 	void drawCoordiates(COLORREF axisColor, COLORREF girdColor);
 	void addFunc(wstring expr);
-	void drawFunc(wstring func, COLORREF lineColor);
-	void drawFunc(wstring func, COLORREF lineColor, Range range);
 	void drawAllFunc();
 	
 private:
@@ -47,6 +45,7 @@ private:
 	HBRUSH bgBush;
 	PAINTSTRUCT *ps;
     vector<wstring>drawFuncarray;
-
-	
+	COLORREF lineColor[3];
+	void drawFunc(wstring func, COLORREF lineColor);
+	void drawFunc(wstring func, COLORREF lineColor, Range range);
 };

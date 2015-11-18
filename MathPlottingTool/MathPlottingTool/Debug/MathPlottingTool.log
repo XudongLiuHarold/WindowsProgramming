@@ -1,49 +1,10 @@
-﻿生成启动时间为 11/17/15 10:14:00 PM。
+﻿生成启动时间为 11/18/15 4:10:24 PM。
      1>项目“C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\MathPlottingTool\MathPlottingTool.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt CoordinatesView.cpp PaserModel.cpp error.cpp functions.cpp parser.cpp variablelist.cpp
-         variablelist.cpp
-         functions.cpp
-         error.cpp
-         正在生成代码...
-         正在编译...
-         parser.cpp
-         PaserModel.cpp
-     1>c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2148): warning C4244: “=”: 从“wchar_t”转换到“char”，可能丢失数据
-         c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2169): note: 参见对正在编译的函数 模板 实例化“_OutIt std::_Copy_impl<_InIt,_OutIt>(_InIt,_InIt,_OutIt,std::_Nonscalar_ptr_iterator_tag)”的引用
-                 with
-                 [
-                     _OutIt=char *,
-                     _InIt=wchar_t *
-                 ]
-         c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2200): note: 参见对正在编译的函数 模板 实例化“_OutIt std::_Copy_impl<_InIt,char*>(_InIt,_InIt,_OutIt)”的引用
-                 with
-                 [
-                     _OutIt=char *,
-                     _InIt=wchar_t *
-                 ]
-         c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2210): note: 参见对正在编译的函数 模板 实例化“_OutIt std::_Copy_impl<_InIt,_OutIt>(_InIt,_InIt,_OutIt,std::random_access_iterator_tag,std::random_access_iterator_tag)”的引用
-                 with
-                 [
-                     _OutIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
-                     _InIt=wchar_t *
-                 ]
-         c:\program files (x86)\microsoft visual studio 14.0\vc\include\xutility(2230): note: 参见对正在编译的函数 模板 实例化“_OutIt std::_Copy_impl<wchar_t*,_OutIt>(_InIt,_InIt,_OutIt,std::true_type)”的引用
-                 with
-                 [
-                     _OutIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
-                     _InIt=wchar_t *
-                 ]
-         c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\pasermodel.cpp(15): note: 参见对正在编译的函数 模板 实例化“_OutIt std::copy<std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>,std::_String_iterator<std::_String_val<std::_Simple_types<char>>>>(_InIt,_InIt,_OutIt)”的引用
-                 with
-                 [
-                     _OutIt=std::_String_iterator<std::_String_val<std::_Simple_types<char>>>,
-                     _InIt=std::_String_iterator<std::_String_val<std::_Simple_types<wchar_t>>>
-                 ]
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt CoordinatesView.cpp
          CoordinatesView.cpp
-     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\coordinatesview.cpp(62): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
-     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\coordinatesview.cpp(193): warning C4018: “<”: 有符号/无符号不匹配
-         正在生成代码...
+     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\coordinatesview.cpp(66): warning C4244: “参数”: 从“double”转换到“int”，可能丢失数据
+     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\coordinatesview.cpp(197): warning C4018: “<”: 有符号/无符号不匹配
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.lib" /MACHINE:X86 Debug\CoordinatesView.obj
          Debug\error.obj
@@ -57,4 +18,4 @@
 
 已成功生成。
 
-已用时间 00:00:02.63
+已用时间 00:00:01.20
