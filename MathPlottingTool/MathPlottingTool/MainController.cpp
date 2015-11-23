@@ -130,6 +130,8 @@ LRESULT CALLBACK WndProc(
 	static int			cyChar, iColor[3];
 	TCHAR				*szColorName[3] = { L"Red",L"Green",L"Blue" };
 
+	Model model = Model::GetInstance();
+
 
 	switch (uMsg)
 	{
@@ -316,29 +318,13 @@ LRESULT CALLBACK WndProc(
 		}
 			break;
 		case SAVEBUTTON:
-		{
-			Model* model = Model::singleton();
-			model->exportImage(hwnd);
+		{		
+			model.exportImage(hwnd);
 		}
 		break;
 		case IMPORTCSV:
 		{
-			WCHAR filename[MAX_PATH] = L"";
-
-			OPENFILENAMEW ofn;
-			ZeroMemory(&ofn, sizeof(ofn));
-			ofn.lStructSize = sizeof(ofn);
-			ofn.hwndOwner = hwnd;
-			ofn.hInstance = 0;
-			ofn.lpstrFilter = L"CSV (*.csv)\0All\0*.*\0";
-			ofn.nFilterIndex = 3;
-			ofn.lpstrTitle = L"Import viewport";
-			ofn.lpstrFile = filename;
-			ofn.nMaxFile = MAX_PATH;
-			ofn.Flags = OFN_EXPLORER;
-			ofn.lpstrDefExt = L"png";
-			BOOL bResult = GetSaveFileNameW(&ofn);
-			needToDrawPoint =  OpenCSV(ofn.lpstrFile);
+			needToDrawPoint = model.importData(hwnd);
 			draw(hwnd);
 		}	
 			break;

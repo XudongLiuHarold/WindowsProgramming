@@ -1,18 +1,5 @@
 #include "Model.h"
 
-Model* Model::singleton()
-{
-	if (instance == nullptr)
-	{
-		instance = new Model();
-	}
-	return instance;
-}
-
-Model::~Model()
-{
-}
-
 int Model::exportImage(HWND hwnd)
 {
 	WCHAR filename[MAX_PATH] = L"";
@@ -164,12 +151,76 @@ int Model::exportImage(HWND hwnd)
 	return 1;
 }
 
-int Model::importData()
+vector<POINT> Model::importData(HWND hwnd)
 {
-	return 0;
+
+	WCHAR filename[MAX_PATH] = L"";
+
+	OPENFILENAMEW ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hwnd;
+	ofn.hInstance = 0;
+	ofn.lpstrFilter = L"CSV (*.csv)\0All\0*.*\0";
+	ofn.nFilterIndex = 3;
+	ofn.lpstrTitle = L"Import viewport";
+	ofn.lpstrFile = filename;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER;
+	ofn.lpstrDefExt = L"png";
+	BOOL bResult = GetSaveFileNameW(&ofn);
+
+
+
+
+	vector<POINT>fileData;
+	HANDLE hFile;//定义一个句柄。
+	hFile = CreateFile(ofn.lpstrFile,
+		GENERIC_READ,
+		FILE_SHARE_READ,
+		NULL,
+		OPEN_EXISTING,
+		FILE_ATTRIBUTE_NORMAL,
+		NULL);//使用CreatFile这个API函数打开文件
+	DWORD dwDataLen;
+	char FileBuffer[1000];
+	ReadFile(hFile, FileBuffer, 100, &dwDataLen, NULL);//读取数据
+	FileBuffer[dwDataLen] = 0;//将数组未尾设零。
+	CloseHandle(hFile);//关闭句柄
+
+	int i = 0;
+	//string content(FileBuffer);
+	std::string temp = "";
+	float x, y;
+	bool isY = false;
+	POINT point;
+	while (FileBuffer[i] != '\0')
+	{
+		if (FileBuffer[i] == '\r' || FileBuffer[i] == '\n')
+		{
+			y = atof(temp.data());
+			i++;
+			temp = "";
+			point.x = x;
+			point.y = y;
+			fileData.push_back(point);
+		}
+		else if (FileBuffer[i] != ',') {
+			temp += FileBuffer[i];
+
+		}
+		else {
+			x = atof(temp.data());
+			temp = "";
+
+		}
+		i++;
+	}
+	return fileData;
 }
 
 double Model::parser()
 {
 	return 0.0;
 }
+
