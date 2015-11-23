@@ -1,44 +1,24 @@
-#include<Windows.h>
 #include<windowsx.h>
-#include<gdiplus.h>
 #include"ExportModel.h"
 
-#pragma comment(lib, "GdiPlus.lib")
-using namespace Gdiplus; 
-
-
-int GetEncoderClsid(const WCHAR* format, CLSID* pClsid)
+BOOL SaveBitmap(HWND hwnd, int width, int height, int format)
 {
-	UINT  num = 0;          // number of image encoders
-	UINT  size = 0;         // size of the image encoder array in bytes
+	WCHAR filename[MAX_PATH] = L"";
 
-	ImageCodecInfo* pImageCodecInfo = NULL;
+	OPENFILENAMEW ofn;
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = hwnd;
+	ofn.hInstance = 0;
+	ofn.lpstrFilter = L"BMP (*.bmp)\0*.bmp\0JPEG (*.jpg)\0*.jpg\0PNG (*.png)\0*.png\0All\0*.*\0";
+	ofn.nFilterIndex = 3;
+	ofn.lpstrTitle = L"Export viewport";
+	ofn.lpstrFile = filename;
+	ofn.nMaxFile = MAX_PATH;
+	ofn.Flags = OFN_EXPLORER;
+	ofn.lpstrDefExt = L"png";
 
-	GetImageEncodersSize(&num, &size);
-	if (size == 0)
-		return -1;  // Failure
-
-	pImageCodecInfo = (ImageCodecInfo*)(malloc(size));
-	if (pImageCodecInfo == NULL)
-		return -1;  // Failure
-
-	GetImageEncoders(num, size, pImageCodecInfo);
-
-	for (UINT j = 0; j < num; ++j)
-	{
-		if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0)
-		{
-			*pClsid = pImageCodecInfo[j].Clsid;
-			free(pImageCodecInfo);
-			return j;  // Success
-		}
-	}
-	free(pImageCodecInfo);
-	return -1;  // Failure
-}
-
-int save(HWND hwnd,int width,int height)
-{
+	BOOL bResult = GetSaveFileNameW(&ofn);
 
 	HDC hScreenDC = ::GetDC(hwnd);
 	// and a device context to put it in
@@ -49,10 +29,7 @@ int save(HWND hwnd,int width,int height)
 
 	// maybe worth checking these are positive values
 	HBITMAP hBitmap = CreateCompatibleBitmap(hScreenDC, x, y);
-
-	// get a new bitmap
 	HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemoryDC, hBitmap);
-
 	BitBlt(hMemoryDC, 0, 0, width, height, hScreenDC, 0, 0, SRCCOPY);
 	hBitmap = (HBITMAP)SelectObject(hMemoryDC, hOldBitmap);
 
@@ -60,17 +37,116 @@ int save(HWND hwnd,int width,int height)
 	DeleteDC(hMemoryDC);
 	DeleteDC(hScreenDC);
 
-	GdiplusStartupInput gdiplusStartupInput;
-	ULONG_PTR gdiplusToken;
-	GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, NULL);
+	HDC hDC; //设备描述表  
+	int iBits; //当前显示分辨率下每个像素所占字节数  
+	WORD wBitCount; //位图中每个像素所占字节数  
+	DWORD dwPaletteSize = 0, //定义调色板大小， 位图中像素字节大小 ，位图文件大小 ， 写入文件字节数  
+		dwBmBitsSize,
+		dwDIBSize, dwWritten;
+	BITMAP Bitmap; //位图属性结构  
+	BITMAPFILEHEADER bmfHdr; //位图文件头结构  
+	BITMAPINFOHEADER bi; //位图信息头结构  
+	LPBITMAPINFOHEADER lpbi; //指向位图信息头结构  
 
-	Bitmap *image = new Bitmap(hBitmap, NULL);
+	HANDLE fh, hDib, hPal, hOldPal = NULL; //定义文件，分配内存句柄，调色板句柄  
 
-	CLSID myClsId;
-	int retVal = GetEncoderClsid(L"image/bmp", &myClsId);
+										   //计算位图文件每个像素所占字节数  
+	HDC hWndDC = CreateDC(L"DISPLAY", NULL, NULL, NULL);
+	hDC = ::CreateCompatibleDC(hWndDC);
+	iBits = GetDeviceCaps(hDC, BITSPIXEL) * GetDeviceCaps(hDC, PLANES);
+	DeleteDC(hDC);
 
-	image->Save(L"output.bmp", &myClsId, NULL);
-	delete image;
-	GdiplusShutdown(gdiplusToken);
-	return 0;
+	if (iBits <= 1)
+		wBitCount = 1;
+	else if (iBits <= 4)
+		wBitCount = 4;
+	else if (iBits <= 8)
+		wBitCount = 8;
+	else if (iBits <= 24)
+		wBitCount = 24;
+	else
+		wBitCount = 24;
+
+	//计算调色板大小  
+	if (wBitCount <= 8)
+		dwPaletteSize = (1 << wBitCount) * sizeof(RGBQUAD);
+
+	//设置位图信息头结构  
+	GetObject(hBitmap, sizeof(BITMAP), (LPSTR)&Bitmap);
+	bi.biSize = sizeof(BITMAPINFOHEADER);
+	bi.biWidth = Bitmap.bmWidth;
+	bi.biHeight = Bitmap.bmHeight;
+	bi.biPlanes = 1;
+	bi.biBitCount = wBitCount;
+	bi.biCompression = BI_RGB;
+	bi.biSizeImage = 0;
+	bi.biXPelsPerMeter = 0;
+	bi.biYPelsPerMeter = 0;
+	bi.biClrUsed = 0;
+	bi.biClrImportant = 0;
+
+	dwBmBitsSize = ((Bitmap.bmWidth * wBitCount + 31) / 32) * 4 * Bitmap.bmHeight;
+
+	//为位图内容分配内存  
+	hDib = GlobalAlloc(GHND, dwBmBitsSize + dwPaletteSize + sizeof(BITMAPINFOHEADER));
+	lpbi = (LPBITMAPINFOHEADER)GlobalLock(hDib);
+	*lpbi = bi;
+
+	// 处理调色板  
+	hPal = GetStockObject(DEFAULT_PALETTE);
+	if (hPal)
+	{
+		hDC = ::GetDC(NULL);
+		hOldPal = ::SelectPalette(hDC, (HPALETTE)hPal, FALSE);
+		RealizePalette(hDC);
+	}
+
+	// 获取该调色板下新的像素值  
+	GetDIBits(hDC, hBitmap, 0, (UINT)Bitmap.bmHeight,
+		(LPSTR)lpbi + sizeof(BITMAPINFOHEADER)
+		+ dwPaletteSize,
+		(LPBITMAPINFO)
+		lpbi, DIB_RGB_COLORS);
+
+	//恢复调色板  
+	if (hOldPal)
+	{
+		SelectPalette(hDC, (HPALETTE)hOldPal, TRUE);
+		RealizePalette(hDC);
+		::ReleaseDC(NULL, hDC);
+	}
+
+	//创建位图文件 
+
+	fh = CreateFile(ofn.lpstrFile, GENERIC_WRITE,
+		0, NULL, CREATE_ALWAYS,
+		FILE_ATTRIBUTE_NORMAL | FILE_FLAG_SEQUENTIAL_SCAN, NULL);
+
+	if (fh == INVALID_HANDLE_VALUE)
+		return FALSE;
+
+	// 设置位图文件头  
+	bmfHdr.bfType = 0x4D42; // "BM"  
+	dwDIBSize = sizeof(BITMAPFILEHEADER)
+		+ sizeof(BITMAPINFOHEADER)
+		+ dwPaletteSize + dwBmBitsSize;
+	bmfHdr.bfSize = dwDIBSize;
+	bmfHdr.bfReserved1 = 0;
+	bmfHdr.bfReserved2 = 0;
+	bmfHdr.bfOffBits = (DWORD)sizeof(BITMAPFILEHEADER)
+		+ (DWORD)sizeof(BITMAPINFOHEADER)
+		+ dwPaletteSize;
+
+	// 写入位图文件头  
+	WriteFile(fh, (LPSTR)&bmfHdr, sizeof(BITMAPFILEHEADER), &dwWritten, NULL);
+
+	// 写入位图文件其余内容  
+	WriteFile(fh, (LPSTR)lpbi, dwDIBSize,
+		&dwWritten, NULL);
+
+	//清除  
+	GlobalUnlock(hDib);
+	GlobalFree(hDib);
+	CloseHandle(fh);
+	return TRUE;
 }

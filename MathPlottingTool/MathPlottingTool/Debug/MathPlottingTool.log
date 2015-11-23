@@ -1,21 +1,30 @@
-﻿生成启动时间为 11/18/15 10:48:22 PM。
+﻿生成启动时间为 11/23/15 10:37:55 PM。
      1>项目“C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\MathPlottingTool\MathPlottingTool.vcxproj”在节点 2 上(Build 个目标)。
      1>ClCompile:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt MainController.cpp
          MainController.cpp
-     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\maincontroller.cpp(26): warning C4091: “static ”: 没有声明变量时忽略“const Const”的左侧
+     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\maincontroller.cpp(479): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\maincontroller.cpp(482): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\maincontroller.cpp(483): warning C4244: “=”: 从“float”转换到“LONG”，可能丢失数据
+     1>c:\users\harold_liu\source\repos\windowsprogramming\mathplottingtool\mathplottingtool\maincontroller.cpp(491): warning C4244: “=”: 从“double”转换到“float”，可能丢失数据
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt Model.cpp
+         Model.cpp
        Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.lib" /MACHINE:X86 Debug\CoordinatesView.obj
          Debug\error.obj
          Debug\ExplortModel.obj
          Debug\functions.obj
+         Debug\ImportModel.obj
          Debug\MainController.obj
          Debug\parser.obj
          Debug\PaserModel.obj
          Debug\variablelist.obj
-         MathPlottingTool.vcxproj -> C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.exe
-     1>已完成生成项目“C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\MathPlottingTool\MathPlottingTool.vcxproj”(Build 个目标)的操作。
+         Debug\Model.obj
+     1>Model.obj : error LNK2019: 无法解析的外部符号 "private: __thiscall Model::Model(void)" (??0Model@@AAE@XZ)，该符号在函数 "public: static class Model * __cdecl Model::singleton(void)" (?singleton@Model@@SAPAV1@XZ) 中被引用
+     1>Model.obj : error LNK2001: 无法解析的外部符号 "private: static class Model * Model::instance" (?instance@Model@@0PAV1@A)
+     1>C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.exe : fatal error LNK1120: 2 个无法解析的外部命令
+     1>已完成生成项目“C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\MathPlottingTool\MathPlottingTool.vcxproj”(Build 个目标)的操作 - 失败。
 
-已成功生成。
+生成失败。
 
-已用时间 00:00:01.40
+已用时间 00:00:02.12

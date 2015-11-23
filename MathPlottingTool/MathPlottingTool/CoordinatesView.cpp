@@ -4,7 +4,7 @@
 #include"PaserModel.h"
 
 
-CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int height, int gridLength, double _xPerGrid, int milesGap, int offsetX, int offsetY)
+CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int height, int gridLength, double _xPerGrid, int milesGap, int offsetX, int offsetY,COLORREF br)
 {
 
 	this->left = left;
@@ -26,16 +26,20 @@ CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int he
 
 	ps = new PAINTSTRUCT;
 	hdc = ::GetDC(hwnd);
-	drawPen = ::CreatePen(PS_SOLID, 1, RGB(123, 123, 123));
-	bgBush = CreateSolidBrush(RGB(255,255,255));
+	drawPen = ::CreatePen(PS_SOLID, 2, RGB(123, 123, 123));
+	
+	HPEN transferPen = ::CreatePen(PS_SOLID, 0.1, RGB(255,255,255));
+	bgBush = ::CreateSolidBrush(br);
 
+	::SelectObject(hdc, transferPen);
+	::Rectangle(hdc, left, top, width + 60, height);
+	::DeleteObject(transferPen);
 	::SelectObject(hdc,drawPen);
 	::SelectObject(hdc,bgBush);
-
 	::Rectangle(hdc,left,top,width,height);
-
 	::DeleteObject(drawPen);
 	::DeleteObject(bgBush);
+
 }
 
 CoordinatesView::~CoordinatesView()
@@ -63,7 +67,7 @@ void CoordinatesView::drawCoordiates(COLORREF axisColor, COLORREF girdColor)
 
 	//HPEN  style 
 	HPEN AxisPen = CreatePen(PS_SOLID, 3, RGB(0, 0, 0));
-	HPEN LightGridPen = CreatePen(PS_SOLID, 1.25, RGB(123, 123, 123));
+	HPEN LightGridPen = CreatePen(PS_DASH, 1.25, RGB(100, 149, 237));
 	HPEN BoldGridPen = CreatePen(PS_SOLID, 2, RGB(123, 123, 123));
 
 	//draw Axis
@@ -178,8 +182,12 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 		range.end = maximum_visible_x;
 	}
 
-
 	int startY = static_cast<int>(parserFunc(func,range.begin));
+
+	if (startY == -1024 * 1024)
+	{
+	 ::MessageBox(hwnd, L"输入的表达式错误", L"提示", MB_OK | MB_ICONINFORMATION);
+	}
 	::MoveToEx(hdc, drawing_pixel_x, startY, NULL);
 
 	for (double x = range.begin; x < range.end; x += x_per_pixel) {
@@ -187,8 +195,8 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 		double y = parserFunc(func,x);
 		int drawing_y = static_cast<int>(-(y / x_per_pixel) + zeroPointY);
 		::LineTo(hdc, drawing_pixel_x, drawing_y);
-	}
 	::DeleteObject(drawFuncpen);
+	}
 
 }
 
@@ -201,4 +209,28 @@ void CoordinatesView::drawAllFunc()
 			drawFunc(drawFuncarray[i], lineColor[i]);
 		}	
 	}
+}
+
+void CoordinatesView::drawAllPoint(vector<POINT>allPointToDraw)
+{
+	if (allPointToDraw.size() != 0)
+	{
+		double x_per_pixel = static_cast<double>(this->xPerGrid) / static_cast<double>(this->gridLength);
+		int len = allPointToDraw.size();
+		POINT x[256];
+		// it's hard ,need to improve
+		for (int i = 0; i < 256; i++)
+		{
+			x[i] = allPointToDraw[i];
+		}
+		HPEN drawFuncpen = ::CreatePen(PS_SOLID, 2, lineColor[1]);
+		::SelectObject(hdc, drawFuncpen);
+		::Polyline(hdc, x, allPointToDraw.size());
+		::DeleteObject(drawFuncpen);
+	}
+}
+
+void CoordinatesView::setBush(HBRUSH br)
+{
+	bgBush = br;
 }

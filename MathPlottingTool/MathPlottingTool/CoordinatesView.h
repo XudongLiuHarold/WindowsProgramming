@@ -21,13 +21,16 @@ public:
 		double _xPerGrid,
 		int milesGap,
 		int offsetX,
-		int offsetY);
+		int offsetY,
+		COLORREF br);
 	~CoordinatesView();
 
 	void drawCoordiates(COLORREF axisColor, COLORREF girdColor);
 	void addFunc(wstring expr);
 	void drawAllFunc();
-	
+	void drawAllPoint(vector<POINT>allPointToDraw);
+	void setBush(HBRUSH br);
+
 private:
 	HWND hwnd;
 	int top;

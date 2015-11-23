@@ -2,7 +2,6 @@
 // declarations
 #include "parser.h"
 
-
 using namespace std;
 
 
@@ -78,6 +77,7 @@ double Parser::parse(const char new_expr[])
 		{
 			snprintf(ans_str, sizeof(ans_str), "Error: %s (ln %i, col %i)", err.get_msg(), err.get_row(), err.get_col());
 		}
+		return -1024*1024;
 	}
 
 	return ans;

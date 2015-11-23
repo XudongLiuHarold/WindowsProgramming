@@ -1,3 +1,3 @@
 #pragma once
-int save(HWND hwnd, int width, int height);
-HBITMAP other(HWND hwnd);
+#include<Windows.h>
+BOOL SaveBitmap(HWND hwnd, int width, int height, int format);

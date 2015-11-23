@@ -23,8 +23,6 @@ double parserFunc(wstring expr, double varible)
 	string x = "x";
 	
 	string_replace(expression, x, var);
-
-
 		if (strcmp(expression.c_str(), "") != 0)
 		{
 				// evaluate the expression
