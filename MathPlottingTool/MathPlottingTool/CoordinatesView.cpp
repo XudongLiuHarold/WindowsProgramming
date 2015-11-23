@@ -1,7 +1,7 @@
 #include "CoordinatesView.h"
 #include <cstdio>
 #include <tchar.h>
-#include"PaserModel.h"
+#include"Model.h"
 
 
 CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int height, int gridLength, double _xPerGrid, int milesGap, int offsetX, int offsetY,COLORREF br)
@@ -155,6 +155,8 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor)
 
 void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 {
+	Model model = Model::GetInstance();
+
 	if (range.end < range.begin) {
 		std::fprintf(stderr, "ERROR! can't draw function in that range\n");
 	}
@@ -182,7 +184,7 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 		range.end = maximum_visible_x;
 	}
 
-	int startY = static_cast<int>(parserFunc(func,range.begin));
+	int startY = static_cast<int>(model.parser(func,range.begin));
 
 	if (startY == -1024 * 1024)
 	{
@@ -192,7 +194,7 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 
 	for (double x = range.begin; x < range.end; x += x_per_pixel) {
 		drawing_pixel_x += 1;
-		double y = parserFunc(func,x);
+		double y = model.parser(func,x);
 		int drawing_y = static_cast<int>(-(y / x_per_pixel) + zeroPointY);
 		::LineTo(hdc, drawing_pixel_x, drawing_y);
 	::DeleteObject(drawFuncpen);

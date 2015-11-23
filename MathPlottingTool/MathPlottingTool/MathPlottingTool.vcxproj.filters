@@ -27,9 +27,6 @@
     <ClCompile Include="CoordinatesView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="PaserModel.cpp">
-      <Filter>源文件\PaserModel</Filter>
-    </ClCompile>
     <ClCompile Include="error.cpp">
       <Filter>源文件\PaserModel</Filter>
     </ClCompile>
@@ -64,9 +61,6 @@
     </ClInclude>
     <ClInclude Include="variablelist.h">
       <Filter>头文件\PaserModel</Filter>
-    </ClInclude>
-    <ClInclude Include="PaserModel.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Model.h">
       <Filter>头文件</Filter>

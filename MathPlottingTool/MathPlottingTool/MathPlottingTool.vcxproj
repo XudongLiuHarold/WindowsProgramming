@@ -154,9 +154,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="parser.cpp" />
-    <ClCompile Include="PaserModel.cpp">
-      <DeploymentContent>true</DeploymentContent>
-    </ClCompile>
     <ClCompile Include="variablelist.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -168,7 +165,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="parser.h" />
-    <ClInclude Include="PaserModel.h" />
     <ClInclude Include="variablelist.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -42,9 +42,6 @@ WNDPROC OldProc[3];
 LRESULT CALLBACK WndProc(_In_  HWND hwnd,_In_  UINT uMsg,_In_  WPARAM wParam,_In_  LPARAM lParam);
 LRESULT CALLBACK ScrollProc(HWND, UINT, WPARAM, LPARAM);
 
-vector<POINT> OpenCSV(LPCTSTR lpFileName);
-
-
 void draw(HWND hwnd)
 {
 	CoordinatesView *  coorView = new CoordinatesView(hwnd,0,0,750,750,20,perGrid,5,offsetX,offsetY,theColor);
@@ -431,57 +428,5 @@ LRESULT CALLBACK ScrollProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lPara
 	}
 
 	return CallWindowProc(OldProc[id], hwnd, message, wParam, lParam);
-}
-
-vector<POINT> OpenCSV(LPCTSTR lpFileName)
-{
-
-	vector<POINT>fileData;
-
-	HANDLE hFile;//定义一个句柄。
-	hFile = CreateFile(lpFileName,
-		GENERIC_READ,
-		FILE_SHARE_READ,
-		NULL,
-		OPEN_EXISTING,
-		FILE_ATTRIBUTE_NORMAL,
-		NULL);//使用CreatFile这个API函数打开文件
-	DWORD dwDataLen;
-	char FileBuffer[1000];
-	ReadFile(hFile, FileBuffer, 100, &dwDataLen, NULL);//读取数据
-	FileBuffer[dwDataLen] = 0;//将数组未尾设零。
-	CloseHandle(hFile);//关闭句柄
-
-	int i = 0;
-	//string content(FileBuffer);
-	std::string temp = "";
-	float x, y;
-	bool isY = false;
-	POINT point;
-	while (FileBuffer[i] != '\0')
-	{
-		if (FileBuffer[i] == '\r' || FileBuffer[i] == '\n')
-		{
-			y = atof(temp.data());
-			i++;
-			temp = "";
-			point.x = x;
-			point.y = y;
-			fileData.push_back(point);
-		}
-		else if (FileBuffer[i] != ',') {
-			temp += FileBuffer[i];
-
-		}
-		else {
-			x = atof(temp.data());
-			temp = "";
-
-		}
-		//if(FileBuffer[i] ==',')
-		//	isY = true;
-		i++;
-	}
-	return fileData;
 }
 
