@@ -1,6 +1,9 @@
-﻿生成启动时间为 11/24/15 12:07:37 AM。
+﻿生成启动时间为 11/24/15 4:41:36 PM。
      1>项目“C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\MathPlottingTool\MathPlottingTool.vcxproj”在节点 2 上(Build 个目标)。
-     1>Link:
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\" /Fd"Debug\vc140.pdb" /Gd /TP /analyze- /errorReport:prompt MainController.cpp
+         MainController.cpp
+       Link:
          C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /Debug /PDB:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Harold_LIU\Source\Repos\WindowsProgramming\MathPlottingTool\Debug\MathPlottingTool.lib" /MACHINE:X86 Debug\CoordinatesView.obj
          Debug\error.obj
          Debug\functions.obj
@@ -13,4 +16,4 @@
 
 已成功生成。
 
-已用时间 00:00:00.48
+已用时间 00:00:00.37

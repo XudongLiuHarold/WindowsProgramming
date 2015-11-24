@@ -28,14 +28,14 @@ double perGrid = 1.0;
 int mouseX1, mouseY1, mouseX2, mouseY2;
 int dx = 0, dy = 0;
 
-static wstring needToDrawFunc [3];
+static wstring needToDrawFunc[3] = {L"",L"",L""};
 static vector<POINT> needToDrawPoint;
 
 HWND hwnd_func_1,hwnd_func_2,hwnd_func_3;
 COLORREF theColor;
 int idFocus;
 WNDPROC OldProc[3];
-
+CoordinatesView *  coorView;
 
 // ====FUNC DECLARE ==== //
 
@@ -44,7 +44,7 @@ LRESULT CALLBACK ScrollProc(HWND, UINT, WPARAM, LPARAM);
 
 void draw(HWND hwnd)
 {
-	CoordinatesView *  coorView = new CoordinatesView(hwnd,0,0,750,750,20,perGrid,5,offsetX,offsetY,theColor);
+    coorView = new CoordinatesView(hwnd,0,0,750,750,20,perGrid,5,offsetX,offsetY,theColor);
 	coorView->drawCoordiates(0x000000, 0xcccccc);
 	for (int  i = 0; i < 3; i++)
 	{
@@ -288,21 +288,39 @@ LRESULT CALLBACK WndProc(
 		{
 		case PlotButton1:
 		{	
-			TCHAR buff [] = TEXT("A#4");
+		
+			TCHAR buff [256] = TEXT("A#4");
 			GetWindowText(hwnd_func_1,buff, GetWindowTextLength(hwnd_func_1)+1);
 			wstring funcString(buff);
-			needToDrawFunc[0] = funcString;
-			//redraw !
-			draw(hwnd);
+			if (-1024 == model.parser(funcString,0))
+			{
+				::MessageBox(hwnd, L"输入的表达式错误, 请您重新输入", L"提示", MB_OK | MB_ICONINFORMATION);
+			}
+			else
+			{
+				needToDrawFunc[0] = funcString;
+				draw(hwnd);
+			}
+
 		}
 			break;
 		case PlotButton2:
 		{
+	
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_2, buff, GetWindowTextLength(hwnd_func_2) + 1);
 			wstring funcString(buff);
-			needToDrawFunc[1] = funcString;
-			draw(hwnd);
+
+			if (-1024  == model.parser(funcString, 0))
+			{
+				::MessageBox(hwnd, L"输入的表达式错误,请您重新输入", L"提示", MB_OK | MB_ICONINFORMATION);
+			}
+			else
+			{
+				needToDrawFunc[1] = funcString;
+				draw(hwnd);
+			}
+
 		}
 			break;
 		case PlotButton3:
@@ -310,12 +328,20 @@ LRESULT CALLBACK WndProc(
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_3, buff, GetWindowTextLength(hwnd_func_3) + 1);
 			wstring funcString(buff);
-			needToDrawFunc[2] = funcString;
-			draw(hwnd);
+		
+			if (-1024  == model.parser(funcString, 0))
+			{
+				::MessageBox(hwnd, L"输入的表达式错误", L"提示", MB_OK | MB_ICONINFORMATION);
+			}
+			else
+			{
+				needToDrawFunc[2] = funcString;
+				draw(hwnd);
+			}
 		}
 			break;
 		case SAVEBUTTON:
-		{		
+		{	
 			model.exportImage(hwnd);
 		}
 		break;

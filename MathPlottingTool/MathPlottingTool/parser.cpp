@@ -26,23 +26,21 @@ Parser::Parser()
 */
 double Parser::parse(const char new_expr[])
 {
-	try
-	{
 		// check the length of expr
 		if ((int)strlen(new_expr) > EXPR_LEN_MAX)
 		{
-			throw Error(row(), col(), 200);
+			return -1024;
 		}
-
 		// initialize all variables
 		strncpy_s(expr, new_expr, EXPR_LEN_MAX - 1);  // copy the given expression to expr
 		e = expr;                                  // let e point to the start of the expression
 		ans = 0;
 
 		getToken();
+
 		if (token_type == DELIMETER && *token == '\0')
 		{
-			throw Error(row(), col(), 4);
+			return -1024;
 		}
 
 		ans = parse_level1();
@@ -51,37 +49,14 @@ double Parser::parse(const char new_expr[])
 		// an expression ends with a character '\0' and token_type = delimeter
 		if (token_type != DELIMETER || *token != '\0')
 		{
-			if (token_type == DELIMETER)
-			{
 				// user entered a not existing operator like "//"
-				throw Error(row(), col(), 101, token);
-			}
-			else
-			{
-				throw Error(row(), col(), 5, token);
-			}
+				return -1024;	
 		}
-
 		// add the answer to memory as variable "Ans"
-		user_var.add("Ans", ans);
-
-		snprintf(ans_str, sizeof(ans_str), "Ans = %g", ans);
-	}
-	catch (Error err)
-	{
-		if (err.get_row() == -1)
-		{
-			snprintf(ans_str, sizeof(ans_str), "Error: %s (col %i)", err.get_msg(), err.get_col());
-		}
-		else
-		{
-			snprintf(ans_str, sizeof(ans_str), "Error: %s (ln %i, col %i)", err.get_msg(), err.get_row(), err.get_col());
-		}
-		return -1024*1024;
-	}
-
+	//	user_var.add("Ans", ans);
 	return ans;
 }
+
 
 
 /*
@@ -323,7 +298,7 @@ double Parser::parse_level1()
 			ans = parse_level2();
 			if (user_var.add(token_now, ans) == false)
 			{
-				throw Error(row(), col(), 300);
+				return -1024;
 			}
 			return ans;
 		}
@@ -524,7 +499,7 @@ double Parser::parse_level10()
 			double ans = parse_level2();
 			if (token_type != DELIMETER || token[0] != ')' || token[1] || '\0')
 			{
-				throw Error(row(), col(), 3);
+				return -1024;
 			}
 			getToken();
 			return ans;
@@ -558,11 +533,11 @@ double Parser::parse_number()
 		// syntax error or unexpected end of expression
 		if (token[0] == '\0')
 		{
-			throw Error(row(), col(), 6);
+			return -1024;
 		}
 		else
 		{
-			throw Error(row(), col(), 7);
+			return -1024;
 		}
 		break;
 	}
@@ -648,9 +623,7 @@ double Parser::eval_operator(const int op_id, const double &lhs, const double &r
 		// level 7
 	case FACTORIAL: return factorial(lhs);
 	}
-
-	throw Error(row(), col(), 104, op_id);
-	return 0;
+	return -1024;
 }
 
 
@@ -688,12 +661,11 @@ double Parser::eval_function(const char fn_name[], const double &value)
 	{
 		// retrow error, add information about column and row of occurance
 		// TODO: doesnt work yet
-		throw Error(col(), row(), err.get_id(), err.get_msg());
+		return -1024;
 	}
 
 	// unknown function
-	throw Error(row(), col(), 102, fn_name);
-	return 0;
+	return -1024;
 }
 
 
@@ -718,8 +690,8 @@ double Parser::eval_variable(const char var_name[])
 	}
 
 	// unknown variable
-	throw Error(row(), col(), 103, var_name);
-	return 0;
+	//throw Error(row(), col(), 103, var_name);
+	return -1024;
 }
 
 

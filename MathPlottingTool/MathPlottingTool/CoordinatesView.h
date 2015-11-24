@@ -25,6 +25,9 @@ public:
 		COLORREF br);
 	~CoordinatesView();
 
+	int drawFunc(wstring func, COLORREF lineColor);
+	int  drawFunc(wstring func, COLORREF lineColor, Range range);
+
 	void drawCoordiates(COLORREF axisColor, COLORREF girdColor);
 	void addFunc(wstring expr);
 	void drawAllFunc();
@@ -49,6 +52,6 @@ private:
 	PAINTSTRUCT *ps;
     vector<wstring>drawFuncarray;
 	COLORREF lineColor[3];
-	void drawFunc(wstring func, COLORREF lineColor);
-	void drawFunc(wstring func, COLORREF lineColor, Range range);
+
+	
 };

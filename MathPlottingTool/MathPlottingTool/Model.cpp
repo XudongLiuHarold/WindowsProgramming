@@ -225,22 +225,24 @@ double Model::parser(wstring expr, double varible)
 {
 	Parser prs;
 	string expression(expr.length(), ' ');
+
 	copy(expr.begin(), expr.end(), expression.begin());
 	string var;
 	char buff[20];
 	sprintf_s(buff, "%f", varible);
 	var = buff;
-
 	string x = "x";
-
 	string_replace(expression, x, var);
 	if (strcmp(expression.c_str(), "") != 0)
 	{
 		// evaluate the expression
-		double result;
-		result = prs.parse(expression.c_str());
-		return result;
+
+		return prs.parse(expression.c_str());
+
+	
 	}
+
+
 	return 0.0;
 }
 

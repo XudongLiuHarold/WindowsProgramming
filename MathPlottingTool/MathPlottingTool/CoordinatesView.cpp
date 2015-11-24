@@ -145,15 +145,15 @@ void CoordinatesView::addFunc(wstring expr)
 	drawFuncarray.push_back(expr);
 }
 
-void CoordinatesView::drawFunc(wstring func, COLORREF lineColor)
+int CoordinatesView::drawFunc(wstring func, COLORREF lineColor)
 {
 	Range range = {};
-	range.begin = -10000;
-	range.end = +10000;
-	drawFunc(func, lineColor, range);
+	range.begin = -9999999;
+	range.end = +9999999;
+	return  drawFunc(func, lineColor, range);
 }
 
-void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
+int  CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 {
 	Model model = Model::GetInstance();
 
@@ -186,10 +186,6 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 
 	int startY = static_cast<int>(model.parser(func,range.begin));
 
-	if (startY == -1024 * 1024)
-	{
-	 ::MessageBox(hwnd, L"输入的表达式错误", L"提示", MB_OK | MB_ICONINFORMATION);
-	}
 	::MoveToEx(hdc, drawing_pixel_x, startY, NULL);
 
 	for (double x = range.begin; x < range.end; x += x_per_pixel) {
@@ -199,7 +195,7 @@ void CoordinatesView::drawFunc(wstring func, COLORREF lineColor, Range range)
 		::LineTo(hdc, drawing_pixel_x, drawing_y);
 	::DeleteObject(drawFuncpen);
 	}
-
+	return 0;
 }
 
 void CoordinatesView::drawAllFunc()
