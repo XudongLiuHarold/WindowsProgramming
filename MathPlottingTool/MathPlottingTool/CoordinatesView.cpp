@@ -22,7 +22,8 @@ CoordinatesView::CoordinatesView(HWND hwnd, int top, int left, int width, int he
 	lineColor[0] = RGB(251, 73, 71);
 	lineColor[1] = RGB(254,185,37);
 	lineColor[2] = RGB(42,204,52);
-
+	lineColor[3] = RGB(0, 64, 139);
+	lineColor[4] = RGB(4, 4, 4);
 
 	ps = new PAINTSTRUCT;
 	hdc = ::GetDC(hwnd);

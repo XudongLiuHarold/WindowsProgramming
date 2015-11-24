@@ -51,7 +51,7 @@ private:
 	HBRUSH bgBush;
 	PAINTSTRUCT *ps;
     vector<wstring>drawFuncarray;
-	COLORREF lineColor[3];
+	COLORREF lineColor[5];
 
 	
 };

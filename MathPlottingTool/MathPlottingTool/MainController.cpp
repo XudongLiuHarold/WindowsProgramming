@@ -8,10 +8,13 @@
 const int Func1ID = 123;
 const int Func2ID = 124;
 const int Func3ID = 125;
+const int Func4ID = 132;
 
 const int PlotButton1 = 126;
 const int PlotButton2 = 127;
 const int PlotButton3 = 128;
+const int PlotButton4 = 131;
+
 
 const int SAVEBUTTON = 129;
 const int IMPORTCSV = 130;
@@ -28,11 +31,11 @@ double perGrid = 1.0;
 int mouseX1, mouseY1, mouseX2, mouseY2;
 int dx = 0, dy = 0;
 
-static wstring needToDrawFunc[3] = {L"",L"",L""};
+static wstring needToDrawFunc[4] = {L"",L"",L"",L""};
 static vector<POINT> needToDrawPoint;
 
-HWND hwnd_func_1,hwnd_func_2,hwnd_func_3;
-COLORREF theColor;
+HWND hwnd_func_1,hwnd_func_2,hwnd_func_3, hwnd_func_4;
+COLORREF theColor = RGB(255, 255, 255);
 int idFocus;
 WNDPROC OldProc[3];
 CoordinatesView *  coorView;
@@ -46,7 +49,7 @@ void draw(HWND hwnd)
 {
     coorView = new CoordinatesView(hwnd,0,0,750,750,20,perGrid,5,offsetX,offsetY,theColor);
 	coorView->drawCoordiates(0x000000, 0xcccccc);
-	for (int  i = 0; i < 3; i++)
+	for (int  i = 0; i < 4; i++)
 	{
 		coorView->addFunc(needToDrawFunc[i]);
 	}
@@ -72,7 +75,7 @@ int CALLBACK WinMain(
 	wc.hIcon = LoadIcon(hInstance, IDI_APPLICATION);;
 	wc.lpszMenuName = NULL;
 	wc.style = CS_HREDRAW | CS_VREDRAW;
-	wc.hbrBackground = (HBRUSH)(COLOR_WINDOW + 1);
+	wc.hbrBackground = ::CreateSolidBrush(RGB(254,240,184));
 	wc.lpfnWndProc = WndProc;
 	wc.lpszClassName = cls_Name;
 	wc.hInstance = hInstance;
@@ -126,7 +129,6 @@ LRESULT CALLBACK WndProc(
 	static HBRUSH		hBrushScroll[3], hBrushStatic;										
 	static int			cyChar, iColor[3];
 	TCHAR				*szColorName[3] = { L"Red",L"Green",L"Blue" };
-
 	Model model = Model::GetInstance();
 
 
@@ -134,13 +136,15 @@ LRESULT CALLBACK WndProc(
 	{
 	case WM_CREATE:
 	{
+
+
 		hInstance = ((LPCREATESTRUCT)lParam)->hInstance;
 		for (i = 0; i<3; i++)
 		{
 			hScroll[i] = CreateWindow(L"scrollbar",										
 				NULL,
 				WS_CHILD | WS_VISIBLE | SBS_VERT,
-				820+i*50, 500, 20, 100,
+				920+i*50, 550, 20, 100,
 				hwnd,
 				(HMENU)i,											
 				hInstance,
@@ -151,7 +155,7 @@ LRESULT CALLBACK WndProc(
 			hLabel[i] = CreateWindow(L"static",											
 				szColorName[i],
 				WS_CHILD | WS_VISIBLE | SS_CENTER,
-				810+i*50, 500, 50, 15,
+				910+i*50, 550, 50, 15,
 				hwnd,
 				(HMENU)(i + 3),							
 				hInstance,
@@ -160,7 +164,7 @@ LRESULT CALLBACK WndProc(
 			hValue[i] = CreateWindow(L"static",										
 				L"0",
 				WS_CHILD | WS_VISIBLE | SS_CENTER,
-				810 + i * 50, 600, 50, 15,
+				910 + i * 50, 650, 50, 15,
 				hwnd,
 				(HMENU)(i + 6),									
 				hInstance,
@@ -192,6 +196,11 @@ LRESULT CALLBACK WndProc(
 			hwnd, (HMENU)(Func3ID),
 			(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 
+		 hwnd_func_4 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"",
+			 WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
+			 900, 250, 160, 24,	// x, y, w, h
+			 hwnd, (HMENU)(Func4ID),
+			 (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 		// plot button
 		HWND plotButton1 = CreateWindowW(L"BUTTON", L"Plot",
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1070,
@@ -206,15 +215,20 @@ LRESULT CALLBACK WndProc(
 			200, 80, 24, hwnd, (HMENU)(PlotButton3),
 			GetModuleHandle(NULL), NULL);
 
+		HWND plotButton4 = CreateWindowW(L"BUTTON", L"Plot",
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1070,
+			250, 80, 24, hwnd, (HMENU)(PlotButton4),
+			GetModuleHandle(NULL), NULL);
+
 		//export button
-		HWND saveButton1 = CreateWindowW(L"BUTTON", L"Save as bitmap",
-			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1030,
-			300, 100, 24, hwnd, (HMENU)(SAVEBUTTON),
+		HWND saveButton1 = CreateWindowW(L"BUTTON", L"Save Picture",
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 850,
+			340, 96, 96, hwnd, (HMENU)(SAVEBUTTON),
 			GetModuleHandle(NULL), NULL);
 		// import button 
-		HWND import = CreateWindowW(L"BUTTON", L"Import from file",
+		HWND import = CreateWindowW(L"BUTTON", L"ImportCSV",
 			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1030,
-			500, 100, 24, hwnd, (HMENU)(IMPORTCSV),
+			340, 96, 96, hwnd, (HMENU)(IMPORTCSV),
 			GetModuleHandle(NULL), NULL);
 	}
 	break;
@@ -226,10 +240,27 @@ LRESULT CALLBACK WndProc(
 			draw(hwnd);
 			changed = false;
 		}
+		// ===== UI CONFIGURE ==== //
 		HBRUSH rectBS1 = ::CreateSolidBrush(RGB(251, 73, 71));
 		HBRUSH rectBS2 = ::CreateSolidBrush(RGB(254, 185, 37));
 		HBRUSH rectBS3 = ::CreateSolidBrush(RGB(42, 204, 52));
+		HBRUSH rectBS4 = ::CreateSolidBrush(RGB(0, 64, 139));
+		HPEN linePen = ::CreatePen(PS_SOLID, 1.25, RGB(0, 0, 0));
 		HDC hdc = GetDC(hwnd);
+
+		::TextOut(::GetDC(hwnd), 820, 75, L"Plot Function Line", 18);
+		::TextOut(::GetDC(hwnd), 820, 290, L"Import & Export", 15);
+		::TextOut(::GetDC(hwnd), 820, 490, L"Change Coordinates Color", 24);
+		SelectObject(hdc, linePen);
+		::MoveToEx(hdc, 940, 80, NULL);
+		::LineTo(hdc, 1170, 80);
+		::MoveToEx(hdc, 925, 295, NULL);
+		::LineTo(hdc, 1170, 295);
+		::MoveToEx(hdc, 1000, 495, NULL);
+		::LineTo(hdc, 1170, 495);
+		DeleteObject(linePen);
+
+
 		::SelectObject(hdc, rectBS1);
 		::Rectangle(hdc, 820, 105, 840, 125);
 		::DeleteObject(rectBS1);
@@ -239,9 +270,14 @@ LRESULT CALLBACK WndProc(
 		::SelectObject(hdc, rectBS3);
 		::Rectangle(hdc, 820, 205, 840, 225);
 		::DeleteObject(rectBS3);
+		::SelectObject(hdc, rectBS4);
+		::Rectangle(hdc, 820, 255, 840, 275);
+		::DeleteObject(rectBS4);
 		::TextOut(::GetDC(hwnd), 850, 105, L"F(x) =", 6);
 		::TextOut(::GetDC(hwnd), 850, 155, L"G(x) =", 6);
 		::TextOut(::GetDC(hwnd), 850, 205, L"H(x) =", 6);
+		::TextOut(::GetDC(hwnd), 850, 255, L"Z(x) =", 6);
+
 	}
 		break;
 	case WM_LBUTTONDOWN:
@@ -340,6 +376,23 @@ LRESULT CALLBACK WndProc(
 			}
 		}
 			break;
+		case PlotButton4:
+		{
+			TCHAR buff[] = TEXT("A#4");
+			GetWindowText(hwnd_func_4, buff, GetWindowTextLength(hwnd_func_4) + 1);
+			wstring funcString(buff);
+
+			if (-1024 == model.parser(funcString, 0))
+			{
+				::MessageBox(hwnd, L"输入的表达式错误", L"提示", MB_OK | MB_ICONINFORMATION);
+			}
+			else
+			{
+				needToDrawFunc[3] = funcString;
+				draw(hwnd);
+			}
+		}
+		break;
 		case SAVEBUTTON:
 		{	
 			model.exportImage(hwnd);
@@ -404,7 +457,6 @@ LRESULT CALLBACK WndProc(
 
 	case WM_CTLCOLORSTATIC:
 		i = GetWindowLong((HWND)lParam, GWL_ID);
-
 		if (i >= 3 && i <= 8)
 		{
 			SetTextColor((HDC)wParam, rcPrim[i % 3]);

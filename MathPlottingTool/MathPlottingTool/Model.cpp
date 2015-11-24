@@ -21,18 +21,18 @@ int Model::exportImage(HWND hwnd)
 
 	BOOL bResult = GetSaveFileNameW(&ofn);
 
-	HDC hScreenDC = ::GetDC(hwnd);
+	HDC hScreenDC = GetDC(hwnd);
 	// and a device context to put it in
 	HDC hMemoryDC = CreateCompatibleDC(hScreenDC);
 
-	int x = GetDeviceCaps(hScreenDC, HORZRES);
-	int y = GetDeviceCaps(hScreenDC, VERTRES);
+	int x = 760;
+	int y = 720;
 
 	//TODO: HBITMAP NOT RIGHT.
 
 	HBITMAP hBitmap = CreateCompatibleBitmap(hScreenDC, x, y);
 	HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemoryDC, hBitmap);
-	BitBlt(hMemoryDC, 0, 0, 750, 750, hScreenDC, 0, 0, SRCCOPY);
+	BitBlt(hMemoryDC, 0, 0, 760, 720, hScreenDC, 0, 0, SRCCOPY);
 	hBitmap = (HBITMAP)SelectObject(hMemoryDC, hOldBitmap);
 
 	// clean up
