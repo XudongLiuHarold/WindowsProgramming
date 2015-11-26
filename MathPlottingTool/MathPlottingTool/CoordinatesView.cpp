@@ -212,17 +212,23 @@ void CoordinatesView::drawAllFunc()
 
 void CoordinatesView::drawAllPoint(vector<POINT>allPointToDraw)
 {
-	if (allPointToDraw.size() != 0)
+	if (allPointToDraw.size()>0)
 	{
+
+		POINT zeroP;
+		zeroP.x = (left + width) / 2 + offsetX;
+		zeroP.y = (top + height) / 2 + offsetY;
+
 		double x_per_pixel = static_cast<double>(this->xPerGrid) / static_cast<double>(this->gridLength);
-		int len = allPointToDraw.size();
 		POINT x[256];
+
 		// it's hard ,need to improve
-		for (int i = 0; i < 256; i++)
+		for (int i = 0; i < allPointToDraw.size(); i++)
 		{
-			x[i] = allPointToDraw[i];
+			x[i].x =zeroP.x+allPointToDraw[i].x;
+			x[i].y = zeroP.y + allPointToDraw[i].y;
 		}
-		HPEN drawFuncpen = ::CreatePen(PS_SOLID, 2, lineColor[1]);
+		HPEN drawFuncpen = ::CreatePen(PS_SOLID, 2, lineColor[4]);
 		::SelectObject(hdc, drawFuncpen);
 		::Polyline(hdc, x, allPointToDraw.size());
 		::DeleteObject(drawFuncpen);

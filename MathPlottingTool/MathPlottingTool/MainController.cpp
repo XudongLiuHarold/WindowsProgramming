@@ -32,7 +32,7 @@ int mouseX1, mouseY1, mouseX2, mouseY2;
 int dx = 0, dy = 0;
 
 static wstring needToDrawFunc[4] = {L"",L"",L"",L""};
-static vector<POINT> needToDrawPoint;
+vector<POINT> needToDrawPoint;
 
 HWND hwnd_func_1,hwnd_func_2,hwnd_func_3, hwnd_func_4;
 COLORREF theColor = RGB(255, 255, 255);
@@ -324,7 +324,7 @@ LRESULT CALLBACK WndProc(
 		{
 		case PlotButton1:
 		{	
-		
+			needToDrawFunc[0] = L"";
 			TCHAR buff [256] = TEXT("A#4");
 			GetWindowText(hwnd_func_1,buff, GetWindowTextLength(hwnd_func_1)+1);
 			wstring funcString(buff);
@@ -342,7 +342,7 @@ LRESULT CALLBACK WndProc(
 			break;
 		case PlotButton2:
 		{
-	
+			needToDrawFunc[1] = L"";
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_2, buff, GetWindowTextLength(hwnd_func_2) + 1);
 			wstring funcString(buff);
@@ -361,6 +361,7 @@ LRESULT CALLBACK WndProc(
 			break;
 		case PlotButton3:
 		{
+			needToDrawFunc[2] = L"";
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_3, buff, GetWindowTextLength(hwnd_func_3) + 1);
 			wstring funcString(buff);
@@ -378,6 +379,7 @@ LRESULT CALLBACK WndProc(
 			break;
 		case PlotButton4:
 		{
+			needToDrawFunc[3] = L"";
 			TCHAR buff[] = TEXT("A#4");
 			GetWindowText(hwnd_func_4, buff, GetWindowTextLength(hwnd_func_4) + 1);
 			wstring funcString(buff);
@@ -389,8 +391,8 @@ LRESULT CALLBACK WndProc(
 			else
 			{
 				needToDrawFunc[3] = funcString;
-				draw(hwnd);
 			}
+			draw(hwnd);
 		}
 		break;
 		case SAVEBUTTON:

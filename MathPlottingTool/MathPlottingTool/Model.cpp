@@ -173,8 +173,6 @@ vector<POINT> Model::importData(HWND hwnd)
 	BOOL bResult = GetSaveFileNameW(&ofn);
 
 
-
-
 	vector<POINT>fileData;
 	HANDLE hFile;//定义一个句柄。
 	hFile = CreateFile(ofn.lpstrFile,
@@ -218,6 +216,7 @@ vector<POINT> Model::importData(HWND hwnd)
 		}
 		i++;
 	}
+
 	return fileData;
 }
 
