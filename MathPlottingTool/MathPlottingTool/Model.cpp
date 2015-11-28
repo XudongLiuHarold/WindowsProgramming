@@ -17,7 +17,7 @@ int Model::exportImage(HWND hwnd)
 	ofn.lpstrFile = filename;
 	ofn.nMaxFile = MAX_PATH;
 	ofn.Flags = OFN_EXPLORER;
-	ofn.lpstrDefExt = L"png";
+	ofn.lpstrDefExt = L"bmp";
 
 	BOOL bResult = GetSaveFileNameW(&ofn);
 
@@ -28,7 +28,6 @@ int Model::exportImage(HWND hwnd)
 	int x = 760;
 	int y = 720;
 
-	//TODO: HBITMAP NOT RIGHT.
 
 	HBITMAP hBitmap = CreateCompatibleBitmap(hScreenDC, x, y);
 	HBITMAP hOldBitmap = (HBITMAP)SelectObject(hMemoryDC, hBitmap);
@@ -39,20 +38,19 @@ int Model::exportImage(HWND hwnd)
 	DeleteDC(hMemoryDC);
 	DeleteDC(hScreenDC);
 
-	HDC hDC; //设备描述表  
-	int iBits; //当前显示分辨率下每个像素所占字节数  
-	WORD wBitCount; //位图中每个像素所占字节数  
-	DWORD dwPaletteSize = 0, //定义调色板大小， 位图中像素字节大小 ，位图文件大小 ， 写入文件字节数  
+	HDC hDC;
+	int iBits; 
+	WORD wBitCount; 
+	DWORD dwPaletteSize = 0,  
 		dwBmBitsSize,
 		dwDIBSize, dwWritten;
-	BITMAP Bitmap; //位图属性结构  
-	BITMAPFILEHEADER bmfHdr; //位图文件头结构  
-	BITMAPINFOHEADER bi; //位图信息头结构  
-	LPBITMAPINFOHEADER lpbi; //指向位图信息头结构  
+	BITMAP Bitmap; 
+	BITMAPFILEHEADER bmfHdr; 
+	BITMAPINFOHEADER bi; 
+	LPBITMAPINFOHEADER lpbi; 
 
-	HANDLE fh, hDib, hPal, hOldPal = NULL; //定义文件，分配内存句柄，调色板句柄  
+	HANDLE fh, hDib, hPal, hOldPal = NULL; 
 
-										   //计算位图文件每个像素所占字节数  
 	HDC hWndDC = CreateDC(L"DISPLAY", NULL, NULL, NULL);
 	hDC = ::CreateCompatibleDC(hWndDC);
 	iBits = GetDeviceCaps(hDC, BITSPIXEL) * GetDeviceCaps(hDC, PLANES);
@@ -69,11 +67,9 @@ int Model::exportImage(HWND hwnd)
 	else
 		wBitCount = 24;
 
-	//计算调色板大小  
 	if (wBitCount <= 8)
 		dwPaletteSize = (1 << wBitCount) * sizeof(RGBQUAD);
-
-	//设置位图信息头结构  
+ 
 	GetObject(hBitmap, sizeof(BITMAP), (LPSTR)&Bitmap);
 	bi.biSize = sizeof(BITMAPINFOHEADER);
 	bi.biWidth = Bitmap.bmWidth;
@@ -89,12 +85,10 @@ int Model::exportImage(HWND hwnd)
 
 	dwBmBitsSize = ((Bitmap.bmWidth * wBitCount + 31) / 32) * 4 * Bitmap.bmHeight;
 
-	//为位图内容分配内存  
 	hDib = GlobalAlloc(GHND, dwBmBitsSize + dwPaletteSize + sizeof(BITMAPINFOHEADER));
 	lpbi = (LPBITMAPINFOHEADER)GlobalLock(hDib);
 	*lpbi = bi;
 
-	// 处理调色板  
 	hPal = GetStockObject(DEFAULT_PALETTE);
 	if (hPal)
 	{
@@ -103,22 +97,18 @@ int Model::exportImage(HWND hwnd)
 		RealizePalette(hDC);
 	}
 
-	// 获取该调色板下新的像素值  
 	GetDIBits(hDC, hBitmap, 0, (UINT)Bitmap.bmHeight,
 		(LPSTR)lpbi + sizeof(BITMAPINFOHEADER)
 		+ dwPaletteSize,
 		(LPBITMAPINFO)
 		lpbi, DIB_RGB_COLORS);
-
-	//恢复调色板  
+ 
 	if (hOldPal)
 	{
 		SelectPalette(hDC, (HPALETTE)hOldPal, TRUE);
 		RealizePalette(hDC);
 		::ReleaseDC(NULL, hDC);
 	}
-
-	//创建位图文件 
 
 	fh = CreateFile(ofn.lpstrFile, GENERIC_WRITE,
 		0, NULL, CREATE_ALWAYS,
@@ -127,7 +117,6 @@ int Model::exportImage(HWND hwnd)
 	if (fh == INVALID_HANDLE_VALUE)
 		return 0;
 
-	// 设置位图文件头  
 	bmfHdr.bfType = 0x4D42; // "BM"  
 	dwDIBSize = sizeof(BITMAPFILEHEADER)
 		+ sizeof(BITMAPINFOHEADER)
@@ -139,14 +128,11 @@ int Model::exportImage(HWND hwnd)
 		+ (DWORD)sizeof(BITMAPINFOHEADER)
 		+ dwPaletteSize;
 
-	// 写入位图文件头  
 	WriteFile(fh, (LPSTR)&bmfHdr, sizeof(BITMAPFILEHEADER), &dwWritten, NULL);
 
-	// 写入位图文件其余内容  
 	WriteFile(fh, (LPSTR)lpbi, dwDIBSize,
 		&dwWritten, NULL);
-
-	//清除  
+  
 	GlobalUnlock(hDib);
 	GlobalFree(hDib);
 	CloseHandle(fh);
@@ -174,22 +160,20 @@ vector<POINT> Model::importData(HWND hwnd)
 
 
 	vector<POINT>fileData;
-	HANDLE hFile;//定义一个句柄。
+	HANDLE hFile;
 	hFile = CreateFile(ofn.lpstrFile,
 		GENERIC_READ,
 		FILE_SHARE_READ,
 		NULL,
 		OPEN_EXISTING,
 		FILE_ATTRIBUTE_NORMAL,
-		NULL);//使用CreatFile这个API函数打开文件
+		NULL);
 	DWORD dwDataLen;
 	char FileBuffer[1000];
-	ReadFile(hFile, FileBuffer, 100, &dwDataLen, NULL);//读取数据
-	FileBuffer[dwDataLen] = 0;//将数组未尾设零。
-	CloseHandle(hFile);//关闭句柄
-
+	ReadFile(hFile, FileBuffer, 100, &dwDataLen, NULL);
+	FileBuffer[dwDataLen] = 0;
+	CloseHandle(hFile);
 	int i = 0;
-	//string content(FileBuffer);
 	std::string temp = "";
 	float x, y;
 	bool isY = false;

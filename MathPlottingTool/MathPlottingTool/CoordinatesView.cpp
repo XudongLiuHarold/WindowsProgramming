@@ -225,8 +225,8 @@ void CoordinatesView::drawAllPoint(vector<POINT>allPointToDraw)
 		// it's hard ,need to improve
 		for (int i = 0; i < allPointToDraw.size(); i++)
 		{
-			x[i].x =zeroP.x+allPointToDraw[i].x;
-			x[i].y = zeroP.y + allPointToDraw[i].y;
+			x[i].x =zeroP.x + allPointToDraw[i].x;
+			x[i].y = zeroP.y - allPointToDraw[i].y;
 		}
 		HPEN drawFuncpen = ::CreatePen(PS_SOLID, 2, lineColor[4]);
 		::SelectObject(hdc, drawFuncpen);

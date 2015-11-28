@@ -1,15 +1,7 @@
-
-
 #include "error.h"
 
 using namespace std;
 
-
-
-/*
-* calculate factorial of value
-* for example 5! = 5*4*3*2*1 = 120
-*/
 double factorial(double value)
 {
 	double res;
@@ -31,10 +23,6 @@ double factorial(double value)
 	if (res == 0) res = 1;        // 0! is per definition 1
 	return res;
 }
-
-/*
-* calculate the sign of the given value
-*/
 double sign(double value)
 {
 	if (value > 0) return 1;

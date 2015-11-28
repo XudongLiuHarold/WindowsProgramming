@@ -179,45 +179,45 @@ LRESULT CALLBACK WndProc(
 		hBrushStatic = CreateSolidBrush(GetSysColor(COLOR_BTNHIGHLIGHT));
 
 		// func input 
-		
+	     
 		hwnd_func_1 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
-			900, 100, 160, 24,	// x, y, w, h
+			900, 100, 220, 24,	// x, y, w, h
 			hwnd, (HMENU)(Func1ID),
 			(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 		 hwnd_func_2 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
-			900, 150, 160, 24,	// x, y, w, h
+			900, 150, 220, 24,	// x, y, w, h
 			hwnd, (HMENU)(Func2ID),
 			(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 		 hwnd_func_3 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"",
 			WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
-			900, 200, 160, 24,	// x, y, w, h
+			900, 200, 220, 24,	// x, y, w, h
 			hwnd, (HMENU)(Func3ID),
 			(HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 
 		 hwnd_func_4 = CreateWindowEx(WS_EX_CLIENTEDGE, L"edit", L"",
 			 WS_CHILD | WS_VISIBLE | WS_TABSTOP | WS_BORDER | ES_LEFT,
-			 900, 250, 160, 24,	// x, y, w, h
+			 900, 250, 220, 24,	// x, y, w, h
 			 hwnd, (HMENU)(Func4ID),
 			 (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
 		// plot button
 		HWND plotButton1 = CreateWindowW(L"BUTTON", L"Plot",
-			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1070,
-			100, 80, 24, hwnd, (HMENU)(PlotButton1),
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1120,
+			100, 60, 24, hwnd, (HMENU)(PlotButton1),
 			GetModuleHandle(NULL), NULL);
 		HWND plotButton2 = CreateWindowW(L"BUTTON", L"Plot",
-			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1070,
-			150, 80, 24, hwnd, (HMENU)(PlotButton2),
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1120,
+			150, 60, 24, hwnd, (HMENU)(PlotButton2),
 			GetModuleHandle(NULL), NULL);
 		HWND plotButton3 = CreateWindowW(L"BUTTON", L"Plot",
-			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1070,
-			200, 80, 24, hwnd, (HMENU)(PlotButton3),
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1120,
+			200, 60, 24, hwnd, (HMENU)(PlotButton3),
 			GetModuleHandle(NULL), NULL);
 
 		HWND plotButton4 = CreateWindowW(L"BUTTON", L"Plot",
-			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1070,
-			250, 80, 24, hwnd, (HMENU)(PlotButton4),
+			WS_TABSTOP | WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON, 1120,
+			250, 60, 24, hwnd, (HMENU)(PlotButton4),
 			GetModuleHandle(NULL), NULL);
 
 		//export button

@@ -1,15 +1,7 @@
-
-// declarations
 #include "parser.h"
 
 using namespace std;
 
-
-
-/*
-* constructor.
-* Initializes all data with zeros and empty strings
-*/
 Parser::Parser()
 {
 	expr[0] = '\0';
@@ -19,11 +11,6 @@ Parser::Parser()
 	token_type = NOTHING;
 }
 
-
-/**
-* parses and evaluates the given expression
-* On error, an error of type Error is thrown
-*/
 double Parser::parse(const char new_expr[])
 {
 		// check the length of expr
@@ -705,10 +692,7 @@ int Parser::row()
 	return -1;
 }
 
-/*
-* Shortcut for getting the current col value (one based)
-* Returns the column (position) where the last token starts
-*/
+
 int Parser::col()
 {
 	return e - expr - strlen(token) + 1;
